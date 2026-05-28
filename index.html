@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>votepull — Dashboard</title>
+    <meta name="description" content="Admin dashboard for the votepull Discord poll verification bot." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <div id="toast-container"></div>
+
+    <div class="layout">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="bot-avatar">VP</div>
+          <div class="bot-info">
+            <span class="bot-name">votepull</span>
+            <span class="bot-status"><span class="status-dot"></span>Online</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="nav-item active" data-tab="overview">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Overview
+          </button>
+          <button class="nav-item" data-tab="settings">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+            Settings
+          </button>
+          <button class="nav-item" data-tab="logs">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Logs
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <span class="version-tag">v1.0.0</span>
+        </div>
+      </aside>
+
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle sidebar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+
+      <main class="main">
+
+        <!-- Overview -->
+        <div class="tab-panel active" id="tab-overview">
+          <div class="page-header">
+            <h1 class="page-title">Overview</h1>
+            <p class="page-subtitle">Real-time stats for your votepull bot.</p>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-icon purple">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="metric-body">
+                <span class="metric-label">Servers</span>
+                <span class="metric-value" id="metric-servers">—</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon green">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              <div class="metric-body">
+                <span class="metric-label">Total Users</span>
+                <span class="metric-value" id="metric-users">—</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon yellow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <div class="metric-body">
+                <span class="metric-label">Bot Ping</span>
+                <span class="metric-value" id="metric-ping">—</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon pink">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="metric-body">
+                <span class="metric-label">Uptime</span>
+                <span class="metric-value" id="metric-uptime">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-row">
+            <h2 class="section-title">Recent Activity</h2>
+            <button class="btn btn-ghost btn-sm" id="refreshActivity">↻ Refresh</button>
+          </div>
+
+          <div class="activity-list" id="activityList">
+            <div class="activity-item">
+              <span class="activity-dot purple"></span>
+              <span class="activity-text">Bot came online</span>
+              <span class="activity-time">Just now</span>
+            </div>
+            <div class="activity-item">
+              <span class="activity-dot green"></span>
+              <span class="activity-text">Slash commands synced to 1 guild</span>
+              <span class="activity-time">Just now</span>
+            </div>
+            <div class="activity-item">
+              <span class="activity-dot yellow"></span>
+              <span class="activity-text">Cache directory initialized</span>
+              <span class="activity-time">Just now</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="tab-panel" id="tab-settings">
+          <div class="page-header">
+            <h1 class="page-title">Settings</h1>
+            <p class="page-subtitle">Configure and control your bot remotely.</p>
+          </div>
+
+          <div class="settings-grid">
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <h3>Bot Status / Presence</h3>
+                <p>Change what the bot displays as its activity in Discord.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="statusText">Status message</label>
+                <input id="statusText" class="form-input" type="text" placeholder='e.g. "Verifying votes..."' maxlength="128" />
+                <span class="form-hint">Max 128 characters</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="activityType">Activity type</label>
+                <select id="activityType" class="form-select">
+                  <option value="playing">Playing</option>
+                  <option value="watching">Watching</option>
+                  <option value="listening">Listening to</option>
+                  <option value="competing">Competing in</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" id="updateStatusBtn">Change Status</button>
+            </div>
+
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <h3>API Endpoint</h3>
+                <p>The backend URL this dashboard communicates with.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="backendUrlInput">Backend URL</label>
+                <input id="backendUrlInput" class="form-input" type="url" placeholder="https://your-bot-api.example.com" />
+                <span class="form-hint">Saved in your browser's local storage</span>
+              </div>
+              <button class="btn btn-secondary" id="saveBackendBtn">Save URL</button>
+            </div>
+
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <h3>Cache Control</h3>
+                <p>Force a fresh message scan without waiting for the 1-hour expiry.</p>
+              </div>
+              <button class="btn btn-danger" id="refreshCacheBtn">↻ Force Refresh Cache</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Logs -->
+        <div class="tab-panel" id="tab-logs">
+          <div class="page-header">
+            <h1 class="page-title">Logs</h1>
+            <p class="page-subtitle">Console output from your bot.</p>
+          </div>
+
+          <div class="logs-toolbar">
+            <div class="log-filters">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="info">Info</button>
+              <button class="filter-btn" data-filter="warn">Warn</button>
+              <button class="filter-btn" data-filter="error">Error</button>
+            </div>
+            <div class="log-actions">
+              <button class="btn btn-ghost btn-sm" id="clearLogsBtn">Clear</button>
+              <button class="btn btn-ghost btn-sm" id="fetchLogsBtn">Fetch Live</button>
+            </div>
+          </div>
+
+          <div class="console-window" id="consoleWindow">
+            <div class="console-line info">
+              <span class="log-time">00:00:00</span>
+              <span class="log-badge info">INFO</span>
+              <span class="log-msg">Dashboard loaded. Paste your backend URL in Settings to fetch live logs.</span>
+            </div>
+            <div class="console-line info">
+              <span class="log-time">00:00:01</span>
+              <span class="log-badge info">INFO</span>
+              <span class="log-msg">discord.client — logging in using static token</span>
+            </div>
+            <div class="console-line info">
+              <span class="log-time">00:00:02</span>
+              <span class="log-badge info">INFO</span>
+              <span class="log-msg">discord.gateway — Shard ID None has connected to Gateway</span>
+            </div>
+            <div class="console-line warn">
+              <span class="log-time">00:00:02</span>
+              <span class="log-badge warn">WARN</span>
+              <span class="log-msg">[scan] Full sweep started: 12 channels, last 7 days</span>
+            </div>
+            <div class="console-line info">
+              <span class="log-time">00:00:03</span>
+              <span class="log-badge info">INFO</span>
+              <span class="log-msg">⚡ Bot is online as votepull! Slash commands synced globally.</span>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <script src="./src/app.js"></script>
+  </body>
+</html>
